@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +53,9 @@ class ChatPage extends StatelessWidget {
           children: [
             Expanded(child: Messages(_getDatStream())),
             NewMessage(),
+            if (Platform.isIOS &&
+                MediaQuery.of(context).viewInsets.bottom == 0.0)
+              SizedBox(height: 35),
           ],
         ),
       ),
