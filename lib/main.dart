@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_chat_app/pages/chat_page.dart';
 
+import './pages/auth_page.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -12,10 +14,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        backgroundColor: Colors.green,
         primaryColor: Colors.green,
-        accentColor: Colors.brown,
+        accentColor: Colors.deepOrange,
+        accentColorBrightness: Brightness.dark,
+        buttonTheme: ButtonTheme.of(context).copyWith(
+          buttonColor: Colors.green,
+          textTheme: ButtonTextTheme.primary,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        ),
       ),
-      home: ChatPage(),
+      home: AuthPage(),
     );
   }
 }
