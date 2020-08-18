@@ -43,22 +43,26 @@ class _AuthPageState extends State<AuthPage> {
           'email': email,
         });
       }
+      setState(() {
+        _isLoading = false;
+      });
     } on PlatformException catch (err) {
       String message = 'An error occured, please check your credentials';
       if (err.message != null) {
         message = err.message;
       }
-
+      setState(() {
+        _isLoading = false;
+      });
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(message),
         backgroundColor: Theme.of(context).errorColor,
       ));
     } catch (err) {
-      print(err);
-    } finally {
       setState(() {
         _isLoading = false;
       });
+      print(err);
     }
   }
 
