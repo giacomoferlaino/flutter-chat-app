@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/chat/messages.dart';
+
 class ChatPage extends StatelessWidget {
   Stream<QuerySnapshot> _getDatStream() {
-    return Firestore.instance
-        .collection('chats/FGrjHe5L7a2g9qADDae5/messages')
-        .snapshots();
+    return Firestore.instance.collection('chat').snapshots();
   }
 
   @override
@@ -42,21 +42,12 @@ class ChatPage extends StatelessWidget {
           ),
         ],
       ),
-      body: StreamBuilder(
-        stream: _getDatStream(),
-        builder: (context, streamSnapshort) {
-          if (streamSnapshort.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          final documents = streamSnapshort.data.documents;
-          return ListView.builder(
-            itemCount: documents.length,
-            itemBuilder: (context, index) => Container(
-              padding: EdgeInsets.all(8),
-              child: Text(documents[index]['text']),
-            ),
-          );
-        },
+      body: Container(
+        child: Column(
+          children: [
+            Expanded(child: Messages(_getDatStream())),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
