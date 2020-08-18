@@ -33,3 +33,6 @@ Runner/GeneratedPluginRegistrant.*
 
 # Firebase configurations
 Runner/GoogleService-Info.plist
+
+# Build configurations
+build/*
