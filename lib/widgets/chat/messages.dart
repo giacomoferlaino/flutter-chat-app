@@ -27,8 +27,9 @@ class Messages extends StatelessWidget {
             return ListView.builder(
               itemCount: chatDocs.length,
               itemBuilder: (context, index) => MessageBuggle(
-                chatDocs[index]['text'],
-                chatDocs[index]['userId'] == futureSnapshot.data.uid,
+                message: chatDocs[index]['text'],
+                username: chatDocs[index]['username'],
+                isMe: chatDocs[index]['userId'] == futureSnapshot.data.uid,
                 key: ValueKey(chatDocs[index].documentID),
               ),
             );
