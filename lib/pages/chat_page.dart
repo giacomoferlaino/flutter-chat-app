@@ -3,10 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/chat/messages.dart';
+import '../widgets/chat/new_message.dart';
 
 class ChatPage extends StatelessWidget {
   Stream<QuerySnapshot> _getDatStream() {
-    return Firestore.instance.collection('chat').snapshots();
+    return Firestore.instance
+        .collection('chat')
+        .orderBy('createdAt')
+        .snapshots();
   }
 
   @override
@@ -46,18 +50,9 @@ class ChatPage extends StatelessWidget {
         child: Column(
           children: [
             Expanded(child: Messages(_getDatStream())),
+            NewMessage(),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Firestore.instance
-              .collection('chats/FGrjHe5L7a2g9qADDae5/messages')
-              .add({
-            'text': 'This was added by clicking a button!',
-          });
-        },
       ),
     );
   }
