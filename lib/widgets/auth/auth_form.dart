@@ -8,7 +8,7 @@ class AuthForm extends StatefulWidget {
     bool isLogin,
     BuildContext context,
   ) onSubmit;
-  bool isLoading;
+  final bool isLoading;
 
   AuthForm(this.onSubmit, this.isLoading);
 
@@ -32,7 +32,7 @@ class _AuthFormState extends State<AuthForm> {
       widget.onSubmit(
         _userEmail.trim(),
         _userPassword.trim(),
-        _userName.trim(),
+        _userName != null ? _userName.trim() : null,
         _isLogin,
         context,
       );

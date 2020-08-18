@@ -26,7 +26,7 @@ class _AuthPageState extends State<AuthPage> {
         _isLoading = true;
       });
       if (isLogin) {
-        AuthResult authResult = await _auth.signInWithEmailAndPassword(
+        await _auth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
