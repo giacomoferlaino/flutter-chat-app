@@ -2,17 +2,31 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/chat/messages.dart';
 import '../widgets/chat/new_message.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
+  @override
+  _ChatPageState createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
   Stream<QuerySnapshot> _getDatStream() {
     return FirebaseFirestore.instance
         .collection('chat')
         .orderBy('createdAt')
         .snapshots();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+    firebaseMessaging.requestNotificationPermissions();
+    firebaseMessaging.configure();
   }
 
   @override
