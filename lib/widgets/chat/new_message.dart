@@ -13,7 +13,7 @@ class _NewMessageState extends State<NewMessage> {
   void _sendMessage() async {
     FocusScope.of(context).unfocus();
     final User user = FirebaseAuth.instance.currentUser;
-    final dynamic userData = await FirebaseFirestore.instance
+    final DocumentSnapshot userData = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .get();
@@ -21,7 +21,8 @@ class _NewMessageState extends State<NewMessage> {
       'text': _messageController.text,
       'createdAt': Timestamp.now(),
       'userId': user.uid,
-      'username': userData['username'],
+      'username': userData.get('username'),
+      'userImage': userData.get('image_url')
     });
     _messageController.clear();
   }
