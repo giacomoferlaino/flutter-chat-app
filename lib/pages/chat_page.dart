@@ -9,7 +9,7 @@ import '../widgets/chat/new_message.dart';
 
 class ChatPage extends StatelessWidget {
   Stream<QuerySnapshot> _getDatStream() {
-    return Firestore.instance
+    return FirebaseFirestore.instance
         .collection('chat')
         .orderBy('createdAt')
         .snapshots();

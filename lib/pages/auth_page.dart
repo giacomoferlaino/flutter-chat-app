@@ -31,14 +31,14 @@ class _AuthPageState extends State<AuthPage> {
           password: password,
         );
       } else {
-        AuthResult authResult = await _auth.createUserWithEmailAndPassword(
+        UserCredential authResult = await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
-        await Firestore.instance
+        await FirebaseFirestore.instance
             .collection('users')
-            .document(authResult.user.uid)
-            .setData({
+            .doc(authResult.user.uid)
+            .set({
           'username': username,
           'email': email,
         });

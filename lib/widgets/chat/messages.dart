@@ -11,29 +11,22 @@ class Messages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: FirebaseAuth.instance.currentUser(),
-      builder: (context, futureSnapshot) {
-        if (futureSnapshot.connectionState == ConnectionState.waiting) {
+    return StreamBuilder(
+      stream: _messagesStream,
+      builder: (context, chatSnapshot) {
+        if (chatSnapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         }
-        return StreamBuilder(
-          stream: _messagesStream,
-          builder: (context, chatSnapshot) {
-            if (chatSnapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-            final chatDocs = chatSnapshot.data.documents;
-            return ListView.builder(
-              itemCount: chatDocs.length,
-              itemBuilder: (context, index) => MessageBuggle(
-                message: chatDocs[index]['text'],
-                username: chatDocs[index]['username'],
-                isMe: chatDocs[index]['userId'] == futureSnapshot.data.uid,
-                key: ValueKey(chatDocs[index].documentID),
-              ),
-            );
-          },
+        final chatDocs = chatSnapshot.data.documents;
+        return ListView.builder(
+          itemCount: chatDocs.length,
+          itemBuilder: (context, index) => MessageBuggle(
+            message: chatDocs[index]['text'],
+            username: chatDocs[index]['username'],
+            isMe: chatDocs[index]['userId'] ==
+                FirebaseAuth.instance.currentUser.uid,
+            key: ValueKey(chatDocs[index].documentID),
+          ),
         );
       },
     );
