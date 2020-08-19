@@ -37,6 +37,7 @@ class _ChatPageState extends State<ChatPage> {
         title: const Text('Chat'),
         actions: [
           DropdownButton(
+            underline: Container(),
             icon: Icon(
               Icons.more_vert,
               color: Theme.of(context).primaryIconTheme.color,
