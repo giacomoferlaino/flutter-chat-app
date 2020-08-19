@@ -27,6 +27,7 @@ class _ChatPageState extends State<ChatPage> {
     final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
     firebaseMessaging.requestNotificationPermissions();
     firebaseMessaging.configure();
+    firebaseMessaging.subscribeToTopic('chat');
   }
 
   @override
