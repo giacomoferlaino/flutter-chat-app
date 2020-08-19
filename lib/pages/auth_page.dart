@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -18,6 +21,7 @@ class _AuthPageState extends State<AuthPage> {
     String email,
     String password,
     String username,
+    File userImage,
     bool isLogin,
     BuildContext context,
   ) async {
@@ -31,16 +35,24 @@ class _AuthPageState extends State<AuthPage> {
           password: password,
         );
       } else {
-        UserCredential authResult = await _auth.createUserWithEmailAndPassword(
+        UserCredential userCredential =
+            await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
+        final StorageReference storageRef = FirebaseStorage.instance
+            .ref()
+            .child('user_images')
+            .child('${userCredential.user.uid}.jpg');
+        await storageRef.putFile(userImage).onComplete;
+        final String userImagePath = await storageRef.getDownloadURL();
         await FirebaseFirestore.instance
             .collection('users')
-            .doc(authResult.user.uid)
+            .doc(userCredential.user.uid)
             .set({
           'username': username,
           'email': email,
+          'image_url': userImagePath,
         });
       }
       setState(() {
@@ -51,18 +63,10 @@ class _AuthPageState extends State<AuthPage> {
       if (err.message != null) {
         message = err.message;
       }
-      setState(() {
-        _isLoading = false;
-      });
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(message),
         backgroundColor: Theme.of(context).errorColor,
       ));
-    } catch (err) {
-      setState(() {
-        _isLoading = false;
-      });
-      print(err);
     }
   }
 
